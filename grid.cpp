@@ -9,12 +9,19 @@
 
 #define NUM_CELLS 3
 
+enum Status {
+    CROSS_WIN = 1, ZERO_WIN = -1, DRAW = 0
+};
 
 class Grid {
+
+
     Move *grid[NUM_CELLS][NUM_CELLS]{};
     bool finished = false;
     int numMoves = 0;
+    Status status;
 public:
+
 
     Grid() {
         for (auto &row : grid) {
@@ -44,13 +51,15 @@ public:
             newMove = new Zero(x, y);
         }
         grid[newMove->getX()][newMove->getY()] = newMove;
-        isFinished(newMove);
         ++numMoves;
+        isFinished(newMove);
         return true;
     }
 
     void isFinished(Move *newMove) {
         int countSame = 0;
+
+        Status potentialWinner = (numMoves % 2 == 0) ? ZERO_WIN : CROSS_WIN;
 
         // Check column
         for (auto &row : grid) {
@@ -61,7 +70,7 @@ public:
             }
         }
         if (countSame == NUM_CELLS) {
-            finished = true;
+            setWinner(potentialWinner);
             return;
         }
         countSame = 0;
@@ -75,17 +84,12 @@ public:
             }
         }
         if (countSame == NUM_CELLS) {
-            finished = true;
+            setWinner(potentialWinner);
             return;
         }
         countSame = 0;
 
-        if ((newMove->getX() + newMove->getY()) % 2 == 1)
-            return;  // if move is not placed in diagonal - don't check diagonals
-
-
         // Check diagonals
-
         for (int diag = 0; diag < NUM_CELLS; ++diag) {
             if (grid[diag][diag] != nullptr && newMove->sameType(grid[diag][diag])) {
                 countSame++;
@@ -94,7 +98,7 @@ public:
             }
         }
         if (countSame == NUM_CELLS) {
-            finished = true;
+            setWinner(potentialWinner);
             return;
         }
         countSame = 0;
@@ -106,7 +110,13 @@ public:
             }
         }
         if (countSame == NUM_CELLS) {
-            finished = true;
+            setWinner(potentialWinner);
+            return;
+        }
+
+        // Check for draw
+        if (numMoves == NUM_CELLS * NUM_CELLS) {
+            setWinner(DRAW);
             return;
         }
     }
@@ -140,6 +150,27 @@ public:
         return free;
     }
 
+    int setWinner(Status winner) {
+        finished = true;
+        status = winner;
+    }
+
+    Status getStatus() {
+        return status;
+    }
+
+    Grid *makeCopy() {
+        Grid *grid_rec = new Grid();
+        for (int row = 0; row < NUM_CELLS; ++row) {
+            for (int col = 0; col < NUM_CELLS; ++col) {
+                if (grid[row][col] != nullptr) {
+                    grid_rec->grid[row][col] = grid[row][col]->makeCopy();
+                }
+            }
+        }
+        grid_rec->numMoves = numMoves;
+        return grid_rec;
+    }
 
 };
 

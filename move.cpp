@@ -5,8 +5,9 @@
 #include "move.h"
 
 class Move {
-    int y;
+protected:
     int x;
+    int y;
 public:
 
     Move(const int &x_in, const int &y_in) : x(x_in), y(y_in) {}
@@ -24,6 +25,8 @@ public:
     }
 
     virtual std::string toString() {}
+
+    virtual Move *makeCopy() {}
 };
 
 class Zero : public Move {
@@ -32,6 +35,11 @@ public:
 
     std::string toString() override {
         return " 0 ";
+    }
+
+    Move *makeCopy() override {
+        Move *newMove = new Zero(x, y);
+        return newMove;
     }
 
 };
@@ -44,5 +52,11 @@ public:
     std::string toString() override {
         return " X ";
     }
+
+    Move *makeCopy() override {
+        Move *newMove = new Cross(x, y);
+        return newMove;
+    }
+
 
 };
