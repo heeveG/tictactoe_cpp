@@ -88,31 +88,29 @@ class Robot2 : public Robot {
 public:
     Robot2(Grid *grid, int id) : Robot(grid, std::move(id)) {}
 
-    int recurse(Grid *grid_rec) {
-        if (!grid_rec->getFinished()) {
-            Grid *g1 = grid_rec->makeCopy();
-            Grid *g2 = grid_rec->makeCopy();
+    int recurse(Grid grid_rec) {
+        if (!grid_rec.getFinished()) {
+            Grid g1 = grid_rec;
+            Grid g2 = grid_rec;
             int x, y;
-            std::pair<int, int> pair = randomMove(g1->getFreeMoves());
+            std::pair<int, int> pair = randomMove(g1.getFreeMoves());
             x = pair.first;
             y = pair.second;
-            g1->makeMove(x, y);
-            pair = randomMove(g2->getFreeMoves());
+            g1.makeMove(x, y);
+            pair = randomMove(g2.getFreeMoves());
             x = pair.first;
             y = pair.second;
-            g2->makeMove(x, y);
-            delete grid_rec;
+            g2.makeMove(x, y);
             return recurse(g1) + recurse(g2);
         }
-        int res = grid_rec->getStatus() * pow(-1, id + 1);
-        delete grid_rec;
+        int res = grid_rec.getStatus() * pow(-1, id + 1);
         return res;
     }
 
     void move() override {
         int x1, x2, y1, y2;
-        Grid *g1 = grid.makeCopy();
-        Grid *g2 = grid.makeCopy();
+        Grid g1 = grid;
+        Grid g2 = grid;
 
         std::pair<int, int> pair = randomMove(grid.getFreeMoves());
         x1 = pair.first;
@@ -121,8 +119,8 @@ public:
         x2 = pair.first;
         y2 = pair.second;
 
-        g1->makeMove(x1, y1);
-        g2->makeMove(x2, y2);
+        g1.makeMove(x1, y1);
+        g2.makeMove(x2, y2);
 
         if (recurse(g1) > recurse(g2)) {
             grid.makeMove(x1, y1);

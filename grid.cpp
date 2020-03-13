@@ -31,6 +31,17 @@ public:
         }
     }
 
+    Grid(const Grid& other) : finished(other.finished), numMoves(other.numMoves), status(other.status)
+    {
+        for (int row = 0; row < NUM_CELLS; ++row) {
+            for (int col = 0; col < NUM_CELLS; ++col) {
+                if (other.grid[row][col] != nullptr) {
+                    grid[row][col] = other.grid[row][col]->makeCopy();
+                }
+            }
+        }
+    }
+
     ~Grid() {
         for (auto &row: grid) {
             for (auto &col: row) {
@@ -157,19 +168,6 @@ public:
 
     Status getStatus() {
         return status;
-    }
-
-    Grid *makeCopy() {
-        Grid *grid_rec = new Grid();
-        for (int row = 0; row < NUM_CELLS; ++row) {
-            for (int col = 0; col < NUM_CELLS; ++col) {
-                if (grid[row][col] != nullptr) {
-                    grid_rec->grid[row][col] = grid[row][col]->makeCopy();
-                }
-            }
-        }
-        grid_rec->numMoves = numMoves;
-        return grid_rec;
     }
 
 };

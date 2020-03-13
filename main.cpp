@@ -6,22 +6,27 @@
 int main() {
 
     Grid grid = Grid();
+
     std::vector<Players *> players;
-    std::vector<std::string> input{2};
+    std::vector<std::string> input{"First", "Second"};
+    std::string inp;
 
-    std::cout << "First player: ";
-    std::cin >> input[0];
-
-    std::cout << "Second player: ";
-    std::cin >> input[1];
+    std::cout << "h - human, lvl1 - computer using random, lvl2 -- computer, using binary tree.\n";
 
     for (int i = 0; i < 2; ++i) {
-        if (input[i] == "h") {
+        std::cout << input[i] + " player: ";
+        std::cin >> inp;
+
+        if (inp == "h") {
             players.push_back(new Human(&grid, (i + 1)));
-        } else if (input[i] == "lvl1") {
+        } else if (inp== "lvl1") {
             players.push_back(new Robot(&grid, (i + 1)));
-        } else if (input[i] == "lvl2") {
+        } else if (inp == "lvl2") {
             players.push_back(new Robot2(&grid, (i + 1)));
+        }
+        else{
+            std::cout << "Wrong input. Please reenter\n";
+            i -= 1;
         }
     }
 

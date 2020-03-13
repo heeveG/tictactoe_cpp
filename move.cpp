@@ -27,6 +27,7 @@ public:
     virtual std::string toString() {}
 
     virtual Move *makeCopy() {}
+
 };
 
 class Zero : public Move {
