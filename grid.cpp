@@ -50,7 +50,7 @@ public:
         }
     }
 
-    bool makeMove(int x, int y) {
+    bool makeMove(const int &x, const int &y) {
         if (x < 0 || x > 2 || y < 0 || y > 2 || grid[x][y] != nullptr) {
             std::cout << "Wrong move. Please reenter\n";
             return false;
@@ -139,12 +139,14 @@ public:
     void printGrid() {
         for (auto &row : grid) {
             for (auto &col : row) {
+                std::cout << "|";
                 if (col == nullptr) {
                     std::cout << " _ ";
                 } else {
                     std::cout << col->toString();
                 }
             }
+            std::cout << "|";
             std::cout << std::endl;
         }
     }
@@ -161,7 +163,7 @@ public:
         return free;
     }
 
-    int setWinner(Status winner) {
+    void setWinner(Status winner) {
         finished = true;
         status = winner;
     }

@@ -8,6 +8,7 @@ int main() {
     Grid grid = Grid();
 
     std::vector<Players *> players;
+    players.reserve(2);
     std::vector<std::string> input{"First", "Second"};
     std::string inp;
 
@@ -18,11 +19,11 @@ int main() {
         std::cin >> inp;
 
         if (inp == "h") {
-            players.push_back(new Human(&grid, (i + 1)));
+            players.emplace_back(new Human(&grid, (i + 1)));
         } else if (inp== "lvl1") {
-            players.push_back(new Robot(&grid, (i + 1)));
+            players.emplace_back(new Robot(&grid, (i + 1)));
         } else if (inp == "lvl2") {
-            players.push_back(new Robot2(&grid, (i + 1)));
+            players.emplace_back(new Robot2(&grid, (i + 1)));
         }
         else{
             std::cout << "Wrong input. Please reenter\n";

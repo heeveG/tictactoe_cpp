@@ -46,7 +46,7 @@ public:
 class Human : public Players {
 public:
 
-    Human(Grid *grid, int id) : Players(grid, std::move(id)) {}
+    Human(Grid *grid, int id) : Players(grid, id) {}
 
     void move() override {
         int x = 0, y = 0;
@@ -88,7 +88,7 @@ class Robot2 : public Robot {
 public:
     Robot2(Grid *grid, int id) : Robot(grid, std::move(id)) {}
 
-    int recurse(Grid grid_rec) {
+    int recurse(Grid &grid_rec) {
         if (!grid_rec.getFinished()) {
             Grid g1 = grid_rec;
             Grid g2 = grid_rec;

@@ -20,13 +20,13 @@ public:
         return y;
     }
 
-    virtual bool sameType(Move *obj) {
+    virtual bool sameType(const Move *obj) {
         return typeid(*this) == typeid(*obj);
     }
 
-    virtual std::string toString() {}
+    virtual std::string toString()=0;
 
-    virtual Move *makeCopy() {}
+    virtual Move *makeCopy()=0;
 
 };
 
